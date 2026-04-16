@@ -1,25 +1,107 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App(){
+    const [image, setImage] = useState(null);
+    const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(null);
+
+    const handleUpload = (e) => {
+        const file = e.target.files[0];
+        if(file){
+            setImage(URL.createObjectURL(file));
+            setResult(null);
+        }
+    };
+    const handleAnalyze = () => {
+        setLoading(true);
+        
+        setTimeout(()=> {
+          const isReal = Math.random() > 0.5;
+            setResult({
+                verdict: isReal? "Real":"Fake",
+                confidence: Math.floor(Math.random() * 30) + 70
+            });
+            setLoading(false);
+        }, 2000);
+    };
+    return (
+        <div className="app">
+            <nav>
+                <h3>Truth Lens</h3>
+                <div className="nav-links">
+                  <a href="#home">Home</a>
+                  <a href="#analyzer">Analyzer</a>
+                </div>
+            </nav>
+            <section id="home">
+                <h1>Truth Lens</h1>
+                <button onClick={()=>{
+                    document.getElementById("analyzer").scrollIntoView({behavior:"smooth"});
+                }}>Get Started</button>
+            </section>
+            <section id="analyzer">
+              <fieldset className="analyzer-box">
+                  <legend>Image Analysis</legend>
+                  <p className="analyzer-instructions">
+                    Upload an image to analyze whether it is real or AI-generated.
+                  </p>
+                  <div
+                    className="drop-box"
+                    onDragOver={(e)=>e.preventDefault()}
+                    onDrop={(e)=>{
+                      e.preventDefault();
+                      const file = e.dataTransfer.files[0];
+                      if (file){
+                        setImage(URL.createObjectURL(file));
+                        setResult(null);
+                      }
+                    }}
+                  >
+                    <div className="drop-text"> 
+                    
+                    <p>
+                      Drag & Drop an image here or{" "}
+                      <label htmlFor="fileInput" className="upload-link">
+                        Click here to upload
+                      </label>
+                    </p>
+                    <input
+                      id="fileInput"
+                      type="file"
+                      onChange={handleUpload}
+                      style={{ display: "none" }}
+                    />
+                    </div>
+                  </div>
+                  {image && (
+                      <div>
+                          <img src={image} alt="preview" width="200" />
+                          <br />
+                          <button onClick={handleAnalyze} disabled={loading}>
+                              Analyze
+                          </button>
+                      </div>
+                  )}
+                </fieldset>
+                {loading && <p>Analyzing...</p>}
+                {result && (
+                  <div className={`result-card ${result.verdict.toLowerCase()}`}>
+                    <h3 className="result-title">{result.verdict}</h3>
+                    <p className="result-confidence">
+                      Confidence: {result.confidence}%
+                    </p>
+                  </div>
+                )}
+            </section>
+            <footer className="footer">
+              <div className="footer-divider"></div>
+              <p>
+                © 2026 Truth Lens | Team Members: Aditya Raman, Prithvi K Bagadia,
+                Kavin Iyappan, Alin Renit, Ashrit Puralachetty
+              </p>
+            </footer>
+        </div>
+    )
 }
-
 export default App;
