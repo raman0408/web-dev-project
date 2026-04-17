@@ -22,7 +22,7 @@ function App(){
                 verdict: isReal? "Real":"Fake",
                 confidence: Math.floor(Math.random() * 30) + 70
             });
-            setLoading(false);
+          setLoading(false);
         }, 2000);
     };
     return (
@@ -62,7 +62,7 @@ function App(){
                     
                     <p>
                       Drag & Drop an image here or{" "}
-                      <label htmlFor="fileInput" className="upload-link">
+                      <label htmlFor="fileInput" className="upload-link" >
                         Click here to upload
                       </label>
                     </p>
@@ -78,13 +78,14 @@ function App(){
                       <div>
                           <img src={image} alt="preview" width="200" />
                           <br />
-                          <button onClick={handleAnalyze} disabled={loading}>
+                          <button onClick={handleAnalyze} disabled={loading} >
                               Analyze
                           </button>
                       </div>
                   )}
                 </fieldset>
                 {loading && <p>Analyzing...</p>}
+                
                 {result && (
                   <div className={`result-card ${result.verdict.toLowerCase()}`}>
                     <h3 className="result-title">{result.verdict}</h3>
@@ -98,7 +99,7 @@ function App(){
               <div className="footer-divider"></div>
               <p>
                 © 2026 Truth Lens | Team Members: Aditya Raman, Prithvi K Bagadia,
-                Kavin Iyappan, Alin Renit, Ashrit Puralachetty
+                Kavin Iyappan Kasi Shanmugam, Ashrit Puralachetty, Alin Renit
               </p>
             </footer>
         </div>
