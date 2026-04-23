@@ -8,6 +8,14 @@ function App(){
     const [history, setHistory] = useState([]);
     const [fileName, setFileName] = useState("");
 
+    const getHash = (str) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return Math.abs(hash);
+    };
+
     const handleUpload = (e) => {
         const file = e.target.files[0];
         if(!file) return;
@@ -23,10 +31,14 @@ function App(){
         setLoading(true);
         
         setTimeout(()=> {
-          const isReal = Math.random() > 0.5;
+          const hash = getHash(fileName); 
+
+          const isReal = hash % 2 === 0;
+          const confidence = 70 + (hash % 30);
+
           const newResult = {
             verdict: isReal ? "Real" : "Fake",
-            confidence: Math.floor(Math.random() * 30) + 70,
+            confidence: confidence,
             fileName: fileName
           };
             setResult(newResult);
@@ -102,7 +114,12 @@ function App(){
                       </div>
                   )}
                 </fieldset>
-                {loading && <p>Analyzing...</p>}
+                {loading && (
+                  <div className="loading-container">
+                    <div className="spinner"></div>
+                    <span className="loading-text">Analyzing...</span>
+                  </div>
+                )}
                 
                 {result && (
                   <>
@@ -146,6 +163,6 @@ function App(){
               </p>
             </footer>
         </div>
-    )
+    );
 }
 export default App;

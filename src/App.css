@@ -152,6 +152,32 @@ nav h3{
 .upload-link:hover {
   opacity: 0.8;
 }
+.loading-container {
+  margin-top: 20px;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+  gap: 10px;         
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #586e75;
+  border-top: 3px solid #859900;
+  border-radius: 50%;                         /* makes it a circle */
+  animation: spin 1s linear infinite;         /* animation: animation_name duration speed repeat */
+}
+
+.loading-text {
+  font-size: 16px;
+  color: #93a1a1;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }           /* start position of animation */
+  to { transform: rotate(360deg); }           /* end position of animation */
+}
 
 .result-card {
   margin-top: 25px;
